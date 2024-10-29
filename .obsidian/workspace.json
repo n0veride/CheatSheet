@@ -35,7 +35,8 @@
               "title": "Windows File Transfers"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -176,10 +177,12 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "bf1f6e6bc1e4eb17",
+  "active": "661af14329c941b9",
   "lastOpenFiles": [
-    "File Transfers/Windows File Transfers.md",
     "File Transfers/Linux File Transfers.md",
+    "File Transfers/Windows File Transfers.md",
+    "File Transfers/Coding File Transfers.md",
+    "File Transfers/Netcat File Transfers.md",
     "Ports and Services/SMB.md",
     "Tunneling/OpenPortIO.md",
     "Exam Report.md",
@@ -212,8 +215,6 @@
     "OSCP-Exam-Report-Template-Markdown/output/examples/OSMR-exam-report-template_OS_v1.pdf",
     "OSCP-Exam-Report-Template-Markdown/output/examples/OSEP-exam-report-template_ceso_v1.pdf",
     "OSCP-Exam-Report-Template-Markdown/output/examples/OSEP-exam-report-template_OS_v1.pdf",
-    "OSCP-Exam-Report-Template-Markdown/README.md",
-    "OSCP-Exam-Report-Template-Markdown/FAQ.md",
-    "Misc/VMs.md"
+    "OSCP-Exam-Report-Template-Markdown/README.md"
   ]
 }

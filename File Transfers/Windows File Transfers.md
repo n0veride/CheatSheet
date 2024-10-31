@@ -161,16 +161,39 @@ C:\htb> copy n:\[Target_File]
 - Reqs:
 	- Admin access
 	- Member of `Remote Management Users` group
+  
+- Scenario:
+	- Transfer from Win1 to Win2
+	- Have `Administrator` session on Win1 w/ admin rights on Win2
 
-### Confirm WinRM port is Opn
+### Confirm WinRM port is Open
 ```powershell
-Test-NetConnection -ComputerName [Victim_Hostname] -Port 5985
-	ComputerName     : [Victim_Hostname]
-	RemoteAddress    : [Victim_IP]
+Test-NetConnection -ComputerName [Win2_Hostname] -Port 5985
+	ComputerName     : [Win2_Hostname]
+	RemoteAddress    : [Win2_IP]
 	RemotePort       : 5985
 	InterfaceAlias   : Ethernet0
-	SourceAddress    : [Pivot_IP]
+	SourceAddress    : [Win1_IP]
 	TcpTestSucceeded : True
+```
+	- As the session already has privs over Win2, no creds are needed
+
+### Create a PowerShell Remoting Session to Win2
+```powershell
+# In Win1
+$Session = New-PSSession -ComputerName [Win2_Hostname]
+```
+
+### Copy File from Localhost(Win1) to Win2 Session
+```powershell
+# In Win1
+Copy-Item -Path [Input_File_Path] -ToSession $Session -Destination [Output_Path]
+```
+
+### Copy File from Win2 Session to Localhost(Win1)
+```powershell
+# In Win1
+Copy-Item -Path [Input_File_Path] -Destination [Output_Path] -FromSession $Session
 ```
 
 
@@ -257,7 +280,6 @@ C:\Users> tftp -i [Target_IP] GET [Target_File]
 ```
 
 ## Enable Passive Mode
-Linux:  
 ```shell
 # Linux
 passive
@@ -299,21 +321,6 @@ Start-BitsTransfer -Source [Target_File_URL] -Destination [Output_File] -Descrip
 
 
 # Uploading from Windows
-
-## Misc
-
-### BitsTransfer
-```powershell
-Import-Module BitsTransfer
-Start-BitsTransfer -Source [Output_File] -Destination [Target_File_URL] -TransferType Upload
-```
-
-### BitsTransfer w/ Authentication
-```powershell
-Import-Module BitsTransfer
-Start-BitsTransfer -Source [Target_File_URL] -Destination [Output_File] -TransferType Upload -Credential [Username\Domain]
-```
-
 
 ## Web Uploads
 - PowerShell doesn't have a built-in function for upload ops.  Can use `Invoke-WebRequest` or `Invoke-RestMethod`.  Will need a web server that accepts uploads.
@@ -449,4 +456,18 @@ C:\htb> ftp -v -n -s:ftpcommand.txt
 	ftp> USER anonymous
 	ftp> PUT [Input_File]
 	ftp> bye
+```
+
+## Misc
+
+### BitsTransfer
+```powershell
+Import-Module BitsTransfer
+Start-BitsTransfer -Source [Output_File] -Destination [Target_File_URL] -TransferType Upload
+```
+
+### BitsTransfer w/ Authentication
+```powershell
+Import-Module BitsTransfer
+Start-BitsTransfer -Source [Target_File_URL] -Destination [Output_File] -TransferType Upload -Credential [Username\Domain]
 ```
